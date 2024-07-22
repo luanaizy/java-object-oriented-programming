@@ -6,7 +6,7 @@ public class Local {
 	public Local(String endereco){
 		this.endereco = endereco;
 	}
-	public String getEndereco() {
+	public String get_endereco() {
 		return endereco;
 	}
 }

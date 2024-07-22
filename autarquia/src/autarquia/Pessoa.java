@@ -7,11 +7,11 @@ public class Pessoa {
 	private String tipo_habilitacao;
 	private String data_nasc;
 	
-	public String getNome() {
+	public String get_nome() {
 		return nome;
 	}
 
-	public void setNome(String nome) {
+	public void set_nome(String nome) {
 		this.nome = nome;
 	}
 

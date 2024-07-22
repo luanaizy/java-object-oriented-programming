@@ -1,6 +1,7 @@
 package autarquia;
 
-import java.util.Vector;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -12,13 +13,25 @@ public class Main {
 				+ "pedestres sem a presença do semáforo");
 		
 		Pessoa pessoa1 = new Pessoa("Marcos Antonio", 123, 124, "A", "25/01/2000");
+		Pessoa pessoa2 = new Pessoa("Gleiberson", 234, 384, "B", "09/34/2004");
+		
 		Veiculo carro1 = new Veiculo(pessoa1, "AHL9472");
+		Veiculo carro2 = new Veiculo("PHY0972", "Chevre", "Ch", 2018, "2192312op", pessoa2);
 		
 		Local lugar1 = new Local("Rua das Mangueiras");
-		Vector<Multa> multas = new Vector<Multa>();
+		Local lugar2 = new Local("Av. Sao Miguel");
+		
+		List<Multa> multas = new ArrayList<Multa>();
 		multas.add(m1);
 		multas.add(m2);
-		Autuacao aut1 = new Autuacao(multas, carro1, lugar1);	
 		
+		Autuador autuador = new Autuador();
+		autuador.autuar(multas, carro1, lugar1);
+		autuador.autuar(multas, carro2, lugar2);
+		
+		System.out.println("Autuacoes para a pessoa " + pessoa2.get_nome() + ":\n");
+		
+		for(int i=0; i<autuador.get_autuacao(pessoa2).size();i++)
+		autuador.get_autuacao(pessoa2).get(i).imprimir();
 	}
 }
