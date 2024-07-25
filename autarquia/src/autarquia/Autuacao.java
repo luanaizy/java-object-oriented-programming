@@ -4,13 +4,12 @@ import java.util.Date;
 
 public class Autuacao {
 	
-	private List<Multa> multas;
-	private Veiculo veiculo;
-	private Date data;
-	private Local local;
+	protected List<Multa> multas;
+	protected Veiculo veiculo;
+	protected Date data;
+	protected Local local;
 	
 	public Autuacao(List<Multa> multas, Veiculo veiculo, Local local) {
-		super();
 		this.multas = multas;
 		this.veiculo = veiculo;
 		this.data = new Date();
@@ -30,7 +29,7 @@ public class Autuacao {
 	}
 	
 	public void imprimir() {
-		System.out.println("Autuacao: \nMultas:");
+		System.out.println("Multas:");
 		for(int i=0;i<multas.size();i++) {
 			System.out.println(i +". " + multas.get(i).getNome());
 		}

@@ -7,11 +7,20 @@ public class Autuador {
 	public Autuador() {
 		autuacoes = new ArrayList<Autuacao>();
 	}
-	public void autuar(List<Multa> multas, Veiculo veiculo, Local local) {
-		Autuacao autuacao = new Autuacao (multas, veiculo, local);
+	
+	public void autuar(List<Multa> multas, Veiculo veiculo, Local local, String tipo_da_maquina) {
+		Autuacao autuacao = new AutuacaoPorMaquina (multas, veiculo, local,tipo_da_maquina);
 		autuacoes.add(autuacao);
 	}
-	public List<Autuacao> get_autuacao(Pessoa p) {
+	
+	public void autuar(List<Multa> multas, Veiculo veiculo, Local local, Agente agente) {
+		Autuacao autuacao = new AutuacaoPorAgente (multas, veiculo, local,agente);
+		autuacoes.add(autuacao);
+	}
+	
+
+	
+	public List<Autuacao> get_autuacoes(Pessoa p) {
 		List<Autuacao> autuacoes_encontradas = new ArrayList<Autuacao>();
 		for(int i=0; i<autuacoes.size();i++) {
 			Autuacao autuacao_atual = autuacoes.get(i);
@@ -22,7 +31,7 @@ public class Autuador {
 		return autuacoes_encontradas;
 	}
 	
-	public List<Autuacao> get_autuacao(Local l) {
+	public List<Autuacao> get_autuacoes(Local l) {
 		List<Autuacao> autuacoes_encontradas = new ArrayList<Autuacao>();
 		for(int i=0; i<autuacoes.size();i++) {
 			Autuacao autuacao_atual = autuacoes.get(i);
@@ -32,7 +41,7 @@ public class Autuador {
 		}
 		return autuacoes_encontradas;
 	}
-	public List<Autuacao> get_autuacao(Veiculo v) {
+	public List<Autuacao> get_autuacoes(Veiculo v) {
 		List<Autuacao> autuacoes_encontradas = new ArrayList<Autuacao>();
 		for(int i=0; i<autuacoes.size();i++) {
 			Autuacao autuacao_atual = autuacoes.get(i);

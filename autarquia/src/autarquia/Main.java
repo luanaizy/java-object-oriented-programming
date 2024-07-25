@@ -2,7 +2,7 @@ package autarquia;
 
 import java.util.List;
 import java.util.ArrayList;
-
+import java.lang.*;
 public class Main {
 
 	public static void main(String[] args) {
@@ -14,6 +14,7 @@ public class Main {
 		
 		Pessoa pessoa1 = new Pessoa("Marcos Antonio", 123, 124, "A", "25/01/2000");
 		Pessoa pessoa2 = new Pessoa("Gleiberson", 234, 384, "B", "09/34/2004");
+		Pessoa pessoa3 = new Agente("José", 231, 344, "B", "08/23/1934");
 		
 		Veiculo carro1 = new Veiculo(pessoa1, "AHL9472");
 		Veiculo carro2 = new Veiculo("PHY0972", "Chevre", "Ch", 2018, "2192312op", pessoa2);
@@ -26,12 +27,17 @@ public class Main {
 		multas.add(m2);
 		
 		Autuador autuador = new Autuador();
-		autuador.autuar(multas, carro1, lugar1);
-		autuador.autuar(multas, carro2, lugar2);
+		autuador.autuar(multas, carro1, lugar1, "Fotossensor");
+		autuador.autuar(multas, carro2, lugar2, "Camera");
+		autuador.autuar(multas, carro2, lugar2,  (Agente) pessoa3);
+		
 		
 		System.out.println("Autuacoes para a pessoa " + pessoa2.get_nome() + ":\n");
+	
+		for(int i=0; i<autuador.get_autuacoes(pessoa2).size();i++) {
+			System.out.println("Autuacao " + (i+1) + ":");
+			autuador.get_autuacoes(pessoa2).get(i).imprimir();
+		}
 		
-		for(int i=0; i<autuador.get_autuacao(pessoa2).size();i++)
-		autuador.get_autuacao(pessoa2).get(i).imprimir();
 	}
 }
