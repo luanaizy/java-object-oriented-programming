@@ -1,8 +1,16 @@
 package autarquia;
 
 import java.util.List;
+
+import br.ufc.dc.autarquia.Autuador;
+import br.ufc.dc.autarquia.Local;
+import br.ufc.dc.autarquia.Multa;
+import br.ufc.dc.autarquia.Veiculo;
+import br.ufc.dc.autarquia.pessoas.Agente;
+import br.ufc.dc.autarquia.pessoas.Condutor;
+import br.ufc.dc.autarquia.pessoas.Pessoa;
+
 import java.util.ArrayList;
-import java.lang.*;
 public class Main {
 
 	public static void main(String[] args) {
