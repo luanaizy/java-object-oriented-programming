@@ -71,4 +71,21 @@ public class Autuador {
 		}
 		return autuacoes_encontradas;
 	}
+	public List<Autuacao> get_autuacoes(Multa m){
+		List<Autuacao> autuacoes_encontradas = new ArrayList<Autuacao>();
+		for(int i=0; i<autuacoes.size();i++) {
+			Autuacao autuacao_atual = autuacoes.get(i);
+			for(int j=0;j<autuacao_atual.get_multas().size();j++) {
+				if (autuacao_atual.get_multas().get(j) == m) {
+				autuacoes_encontradas.add(autuacao_atual);
+				}
+			}
+		}
+		return autuacoes_encontradas;
+	}
+	public void imprimir_relatorio_de_multas() {
+		for (int i=0;i<autuacoes.size();i++) {
+			autuacoes.get(i).imprimir();
+		}
+	}
 }

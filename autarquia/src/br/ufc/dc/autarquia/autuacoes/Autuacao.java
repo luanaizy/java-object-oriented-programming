@@ -25,6 +25,10 @@ public abstract class Autuacao {
 		multas.add(multa);
 	}
 	
+	public List<Multa> get_multas(){
+		return multas;
+	}
+	
 	public Veiculo get_veiculo() {
 		return veiculo;
 	}

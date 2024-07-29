@@ -46,6 +46,8 @@ public class Main {
 			System.out.println("Autuacao " + (i+1) + ":");
 			autuador.get_autuacoes(pessoa2).get(i).imprimir();
 		}
+		System.out.println("--------------------------------");
+		autuador.imprimir_relatorio_de_multas();
 		
 	}
 }
