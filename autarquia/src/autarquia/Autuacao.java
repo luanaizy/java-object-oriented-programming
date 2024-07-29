@@ -2,7 +2,7 @@ package autarquia;
 import java.util.List;
 import java.util.Date;
 
-public class Autuacao {
+public abstract class Autuacao {
 	
 	protected List<Multa> multas;
 	protected Veiculo veiculo;

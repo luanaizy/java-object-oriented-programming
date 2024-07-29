@@ -12,8 +12,8 @@ public class Main {
 		Multa m2 = new Multa("Parada na faixa sem presenca de semaforo", 88.38, "leve", 2, "Parar em cima da faixa de "
 				+ "pedestres sem a presença do semáforo");
 		
-		Pessoa pessoa1 = new Pessoa("Marcos Antonio", 123, 124, "A", "25/01/2000");
-		Pessoa pessoa2 = new Pessoa("Gleiberson", 234, 384, "B", "09/34/2004");
+		Pessoa pessoa1 = new Condutor("Marcos Antonio", 123, 124, "A", "25/01/2000");
+		Pessoa pessoa2 = new Condutor("Gleiberson", 234, 384, "B", "09/34/2004");
 		Pessoa pessoa3 = new Agente("José", 231, 344, "B", "08/23/1934");
 		
 		Veiculo carro1 = new Veiculo(pessoa1, "AHL9472");

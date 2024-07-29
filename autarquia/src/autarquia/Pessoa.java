@@ -1,11 +1,11 @@
 package autarquia;
 
-public class Pessoa {
-	private String nome;
-	private int cpf;
-	private int cnh;
-	private String tipo_habilitacao;
-	private String data_nasc;
+public abstract class Pessoa {
+	protected String nome;
+	protected int cpf;
+	protected int cnh;
+	protected String tipo_habilitacao;
+	protected String data_nasc;
 	
 	public String get_nome() {
 		return nome;
