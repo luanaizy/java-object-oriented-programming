@@ -2,26 +2,28 @@ package br.ufc.dc.tpi.banco;
 
 import java.util.Vector;
 import br.ufc.dc.tpi.banco.contas.Conta;
+import br.ufc.dc.tpi.banco.contas.ContaEspecial;
 import br.ufc.dc.tpi.banco.contas.ContaPoupanca;
+import br.ufc.dc.tpi.banco.contas.ContaAbstrata;
 
 public class BancoVector{
-	private Vector<Conta> contas;
+	private Vector<ContaAbstrata> contas;
 	private double taxaJuros = 0.02;
 	
 	public BancoVector() {
-		contas = new Vector<Conta>();
+		contas = new Vector<ContaAbstrata>();
 	}
 	
-	public void cadastrar(Conta conta) {
+	public void cadastrar(ContaAbstrata conta) {
 		contas.add(conta);
-		System.out.println("Cadastrando conta " + conta.numero());
+		System.out.println("Cadastrando conta " + conta.get_numero());
 	}
 	
 	
 	
-	private Conta procurar(String numero) {
+	private ContaAbstrata procurar(String numero) {
 		for (int i=0; i<contas.size() ;i++) {
-			if (contas.get(i) != null && contas.get(i).numero() == numero){
+			if (contas.get(i) != null && contas.get(i).get_numero() == numero){
 				return contas.get(i);
 			}
 		}
@@ -31,13 +33,13 @@ public class BancoVector{
 	
 	public void debitar(String numero, double valor) {
 		
-		Conta conta = procurar(numero);
+		ContaAbstrata conta = procurar(numero);
 		if(conta == null) {
 			System.out.println("a conta " + numero + " não existe");
 			return;
 		}
 		
-		if(conta.saldo() >= valor) {
+		if(conta.get_saldo() >= valor) {
 				procurar(numero).debitar(valor);
 				System.out.println("debitando " + valor + " da conta " + numero);
 			}
@@ -48,7 +50,7 @@ public class BancoVector{
 	
 	
 	public void creditar(String numero, double valor) {
-		Conta conta = procurar(numero);
+		ContaAbstrata conta = procurar(numero);
 		if(conta == null) {
 			System.out.println("a conta " + numero + " não existe");
 			return;
@@ -58,17 +60,17 @@ public class BancoVector{
 	}
 	
 	public double saldo(String numero) {
-		Conta conta = procurar(numero);
+		ContaAbstrata conta = procurar(numero);
 		if(conta == null) {
 			System.out.println("a conta " + numero + " não existe");
 			return -1;
 		}
-		return conta.saldo();
+		return conta.get_saldo();
 	}
 	
 	public void transferir(String origem, String destino, double valor) {
-		Conta contaOrigem = procurar(origem);
-		Conta contaDestino = procurar(destino);
+		ContaAbstrata contaOrigem = procurar(origem);
+		ContaAbstrata contaDestino = procurar(destino);
 		if(contaOrigem == null) {
 			System.out.println("a conta " + origem + " não existe");
 			return;
@@ -78,7 +80,7 @@ public class BancoVector{
 			return;
 		}
 		
-		if(contaOrigem.saldo() >= valor) {
+		if(contaOrigem.get_saldo() >= valor) {
 			contaOrigem.creditar(valor);
 			procurar(destino).creditar(valor);
 			System.out.println("transferindo "+ valor + " da conta " + origem + " para a conta " + destino);
@@ -87,12 +89,22 @@ public class BancoVector{
 	}
 	
 	public void renderJuros(String numero) {
-		Conta conta = procurar(numero);
+		ContaAbstrata conta = procurar(numero);
 		if (conta instanceof ContaPoupanca && conta != null) {
 			((ContaPoupanca) conta).renderJuros(taxaJuros);
-			System.out.println("Rendendo juros - saldo atual de "+ conta.numero() + ": " + conta.saldo());
+			System.out.println("Rendendo juros - saldo atual de "+ conta.get_numero() + ": " + conta.get_saldo());
 		} else {
-		System.out.println("A conta "+ conta.numero() + " não é poupança ou não existe");
+		System.out.println("A conta "+ conta.get_numero() + " não é poupança ou não existe");
+		}
+	}
+	
+	public void render_bonus(String numero) {
+		ContaAbstrata conta = procurar(numero);
+		if (conta instanceof ContaEspecial && conta != null) {
+			((ContaEspecial) conta).render_bonus();
+			System.out.println("Rendendo bonus - saldo atual de "+ conta.get_numero() + ": " + conta.get_saldo());
+		} else {
+			System.out.println("A conta "+ conta.get_numero() + " não é especial ou não existe");
 		}
 	}
 }

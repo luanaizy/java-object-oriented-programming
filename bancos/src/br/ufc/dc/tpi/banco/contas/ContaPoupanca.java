@@ -7,6 +7,6 @@ public class ContaPoupanca extends Conta {
 	}
 	
 	public void renderJuros(double taxa) {
-		creditar(saldo() * taxa);
+		creditar(get_saldo() * taxa);
 	}
 }

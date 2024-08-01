@@ -1,7 +1,11 @@
 package br.ufc.dc.tpi.banco;
 
+import br.ufc.dc.tpi.banco.contas.ContaAbstrata;
+
 import br.ufc.dc.tpi.banco.contas.Conta;
+import br.ufc.dc.tpi.banco.contas.ContaEspecial;
 import br.ufc.dc.tpi.banco.contas.ContaPoupanca;
+
 
 public class BancoArray{
 	private Conta[] contas;
@@ -15,14 +19,14 @@ public class BancoArray{
 	public void cadastrar(Conta conta) {
 		contas[indice] = conta;
 		indice++;
-		System.out.println("Cadastrando conta " + conta.numero());
+		System.out.println("Cadastrando conta " + conta.get_numero());
 	}
 	
 	
 	
 	private Conta procurar(String numero) {
 		for (int i=0; i<contas.length ;i++) {
-			if (contas[i] != null && contas[i].numero() == numero){
+			if (contas[i] != null && contas[i].get_numero() == numero){
 				return contas[i];
 			}
 		}
@@ -38,7 +42,7 @@ public class BancoArray{
 			return;
 		}
 		
-		if(conta.saldo() >= valor) {
+		if(conta.get_saldo() >= valor) {
 				procurar(numero).debitar(valor);
 				System.out.println("debitando " + valor + " da conta " + numero);
 			}
@@ -64,7 +68,7 @@ public class BancoArray{
 			System.out.println("a conta " + numero + " não existe");
 			return -1;
 		}
-		return conta.saldo();
+		return conta.get_saldo();
 	}
 	
 	public void transferir(String origem, String destino, double valor) {
@@ -79,7 +83,7 @@ public class BancoArray{
 			return;
 		}
 		
-		if(contaOrigem.saldo() >= valor) {
+		if(contaOrigem.get_saldo() >= valor) {
 			contaOrigem.creditar(valor);
 			procurar(destino).creditar(valor);
 			System.out.println("transferindo "+ valor + " da conta " + origem + " para a conta " + destino);
@@ -91,9 +95,18 @@ public class BancoArray{
 		Conta conta = procurar(numero);
 		if (conta instanceof ContaPoupanca && conta != null) {
 			((ContaPoupanca) conta).renderJuros(taxaJuros);
-			System.out.println("Rendendo juros - saldo atual de "+ conta.numero() + ": " + conta.saldo());
+			System.out.println("Rendendo juros - saldo atual de "+ conta.get_numero() + ": " + conta.get_saldo());
 		} else {
-			System.out.println("A conta "+ conta.numero() + " não é poupança ou não existe");
+			System.out.println("A conta "+ conta.get_numero() + " não é poupança ou não existe");
+		}
+	}
+	public void render_bonus(String numero) {
+		ContaAbstrata conta = procurar(numero);
+		if (conta instanceof ContaEspecial && conta != null) {
+			((ContaEspecial) conta).render_bonus();
+			System.out.println("Rendendo bonus - saldo atual de "+ conta.get_numero() + ": " + conta.get_saldo());
+		} else {
+			System.out.println("A conta "+ conta.get_numero() + " não é especial ou não existe");
 		}
 	}
 }
