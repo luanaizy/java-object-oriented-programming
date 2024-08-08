@@ -4,6 +4,7 @@ import br.ufc.dc.tpi.banco.contas.ContaAbstrata;
 import br.ufc.dc.tpi.banco.contas.ContaEspecial;
 import br.ufc.dc.tpi.banco.contas.ContaPoupanca;
 import br.ufc.dc.tpi.exceptions.CIException;
+import br.ufc.dc.tpi.exceptions.CInException;
 import br.ufc.dc.tpi.exceptions.SIException;
 import br.ufc.dc.tpi.repositorios.IRepositorioConta;
 
@@ -95,22 +96,26 @@ public class BancoIndependente implements IBanco {
 		else throw new SIException(contaOrigem.get_saldo(),origem);
 	}
 	
-	public void renderJuros(String numero) {
+	public void renderJuros(String numero) throws CIException, CInException {
 		ContaAbstrata conta = procurar(numero);
 		if (conta instanceof ContaPoupanca && conta != null) {
 			((ContaPoupanca) conta).renderJuros(taxaJuros);
 			System.out.println("Rendendo juros - saldo atual de "+ conta.get_numero() + ": " + conta.get_saldo());
+		} else if (conta == null){
+			throw new CIException(numero);
 		} else {
-			System.out.println("A conta "+ numero + " não é poupança ou não existe");
+			throw new CInException(numero);
 		}
 	}
-	public void render_bonus(String numero) {
+	public void render_bonus(String numero) throws CIException, CInException{
 		ContaAbstrata conta = procurar(numero);
 		if (conta instanceof ContaEspecial && conta != null) {
 			((ContaEspecial) conta).render_bonus();
 			System.out.println("Rendendo bonus - saldo atual de "+ conta.get_numero() + ": " + conta.get_saldo());
+		} else if (conta == null){
+			throw new CIException(numero);
 		} else {
-			System.out.println("A conta "+ conta.get_numero() + " não é especial ou não existe");
+			throw new CInException(numero);
 		}
 	}
 }

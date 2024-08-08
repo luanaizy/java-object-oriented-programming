@@ -7,6 +7,7 @@ import br.ufc.dc.tpi.banco.contas.ContaAbstrata;
 import br.ufc.dc.tpi.banco.contas.ContaEspecial;
 import br.ufc.dc.tpi.banco.contas.ContaPoupanca;
 import br.ufc.dc.tpi.exceptions.CIException;
+import br.ufc.dc.tpi.exceptions.CInException;
 import br.ufc.dc.tpi.exceptions.SIException;
 import br.ufc.dc.tpi.repositorios.*;
 
@@ -81,6 +82,10 @@ public class Auditoria {
 			System.out.println(sie.getMessage());
 			System.out.println("Conta/Saldo:");
 			System.out.println(sie.numeroConta() + "/" + sie.saldoConta());
+		}catch (CInException cine) {
+			System.out.println(cine.getMessage());
+			System.out.println("Conta: " + cine.numeroConta());
+
 		} finally {
 			System.out.println("Unknown error");
 		}
