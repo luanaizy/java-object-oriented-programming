@@ -7,7 +7,7 @@ public class ArrayContas implements IRepositorioConta {
 	int indice;
 	
 	public ArrayContas(){
-		ContaAbstrata[] contas = new ContaAbstrata[100];
+		contas = new ContaAbstrata[100];
 		indice = 0;
 	}
 	
@@ -17,24 +17,29 @@ public class ArrayContas implements IRepositorioConta {
 	}
 	
 	public void remover(String numero) {
-		int local;
+		int local = -1;
 		for (int i=0; i<contas.length ;i++) {
 			if (contas[i] != null && contas[i].get_numero() == numero){
-				int local = 1;
+				local = i;
 				break;
 			}
 		}
+		if (local == -1) return;
 		for(int i = local; i <contas.length; i++) {
 			contas[i]=contas[i+1];
 		}
 		indice--;
-		
 	}
 	public ContaAbstrata procurar(String numero) {
-		
+		for(int i=0; i<contas.length; i++) {
+			if(contas[i] != null && contas[i].get_numero()==numero) {
+				return contas[i];
+			}
+		}
+		return null;
 	}
 	public ContaAbstrata[] listar() {
-		
+		return contas;
 	}
 	public int tamanho() {
 		return contas.length;

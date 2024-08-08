@@ -1,13 +1,12 @@
 package br.ufc.dc.tpi;
 
-import br.ufc.dc.tpi.banco.BancoVector;
 import br.ufc.dc.tpi.auditores.AuditorBancoGenerico;
-import br.ufc.dc.tpi.banco.BancoArray;
 import br.ufc.dc.tpi.banco.BancoIndependente;
 import br.ufc.dc.tpi.banco.contas.Conta;
 import br.ufc.dc.tpi.banco.contas.ContaAbstrata;
 import br.ufc.dc.tpi.banco.contas.ContaEspecial;
 import br.ufc.dc.tpi.banco.contas.ContaPoupanca;
+import br.ufc.dc.tpi.repositorios.*;
 
 public class Auditoria {
 
@@ -32,9 +31,9 @@ public class Auditoria {
 		ContaAbstrata contapoupanca2 = new ContaPoupanca("00012");
 		ContaAbstrata contaespecial2 = new ContaEspecial("00013");
 		
+		VectorContas repositorio = new VectorContas();
 		
-		
-		BancoIndependente bb = new BancoIndependente();
+		BancoIndependente bb = new BancoIndependente(repositorio);
 		bb.cadastrar(conta1);
 		bb.cadastrar(conta2);
 		bb.cadastrar(conta3);
