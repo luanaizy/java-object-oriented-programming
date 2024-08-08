@@ -3,6 +3,8 @@ package br.ufc.dc.tpi.banco;
 import br.ufc.dc.tpi.banco.contas.ContaAbstrata;
 import br.ufc.dc.tpi.banco.contas.ContaEspecial;
 import br.ufc.dc.tpi.banco.contas.ContaPoupanca;
+import br.ufc.dc.tpi.exceptions.CIException;
+import br.ufc.dc.tpi.exceptions.SIException;
 import br.ufc.dc.tpi.repositorios.IRepositorioConta;
 
 public class BancoIndependente implements IBanco {
@@ -41,53 +43,48 @@ public class BancoIndependente implements IBanco {
 	}
 	
 	
-	public void debitar(String numero, double valor) {
+	public void debitar(String numero, double valor) throws CIException, SIException {
 		
 		ContaAbstrata conta = procurar(numero);
 		if(conta == null) {
-			System.out.println("a conta " + numero + " não existe");
-			return;
+			throw new CIException(numero);
 		}
 		
 		if(conta.get_saldo() >= valor) {
-				procurar(numero).debitar(valor);
+				conta.debitar(valor);
 				System.out.println("debitando " + valor + " da conta " + numero);
 			}
-			else System.out.println("a conta " + numero + " tem saldo insuficiente para o debito");
+			else throw new SIException(conta.get_saldo(), conta.get_numero());
 		}
 		
 	
 	
 	
-	public void creditar(String numero, double valor) {
+	public void creditar(String numero, double valor) throws CIException {
 		ContaAbstrata conta = procurar(numero);
 		if(conta == null) {
-			System.out.println("a conta " + numero + " não existe");
-			return;
+			throw new CIException(numero);
 		}
 		conta.creditar(valor);
 		System.out.println("creditando " + valor + " na conta " + numero);
 	}
 	
-	public double saldo(String numero) {
+	public double saldo(String numero) throws CIException {
 		ContaAbstrata conta = procurar(numero);
 		if(conta == null) {
-			System.out.println("a conta " + numero + " não existe");
-			return -1;
+			 throw new CIException(numero);
 		}
 		return conta.get_saldo();
 	}
 	
-	public void transferir(String origem, String destino, double valor) {
+	public void transferir(String origem, String destino, double valor) throws CIException, SIException{
 		ContaAbstrata contaOrigem = procurar(origem);
 		ContaAbstrata contaDestino = procurar(destino);
 		if(contaOrigem == null) {
-			System.out.println("a conta " + origem + " não existe");
-			return;
+			throw new CIException(origem);
 		}
 		if(contaDestino == null) {
-			System.out.println("a conta " + destino + " não existe");
-			return;
+			throw new CIException(destino);
 		}
 		
 		if(contaOrigem.get_saldo() >= valor) {
@@ -95,7 +92,7 @@ public class BancoIndependente implements IBanco {
 			procurar(destino).creditar(valor);
 			System.out.println("transferindo "+ valor + " da conta " + origem + " para a conta " + destino);
 		}
-		else System.out.println("A conta " + origem + " não tem saldo suficiente para transferência");
+		else throw new SIException(contaOrigem.get_saldo(),origem);
 	}
 	
 	public void renderJuros(String numero) {
