@@ -1,10 +1,12 @@
 package br.ufc.dc.autarquia;
 import java.util.List;
 
+import br.ufc.dc.agentes.Agente;
+import br.ufc.dc.agentes.AgenteGuarda;
+import br.ufc.dc.agentes.AgenteMaquina;
 import br.ufc.dc.autarquia.autuacoes.Autuacao;
 import br.ufc.dc.autarquia.autuacoes.AutuacaoPorAgente;
 import br.ufc.dc.autarquia.autuacoes.AutuacaoPorMaquina;
-import br.ufc.dc.autarquia.pessoas.Agente;
 import br.ufc.dc.autarquia.pessoas.Condutor;
 import br.ufc.dc.autarquia.pessoas.Pessoa;
 
@@ -16,15 +18,17 @@ public class Autuador {
 		autuacoes = new ArrayList<Autuacao>();
 	}
 	
-	public void autuar(List<Multa> multas, Veiculo veiculo, Local local, String tipo_da_maquina) {
-		Autuacao autuacao = new AutuacaoPorMaquina (multas, veiculo, local,tipo_da_maquina);
-		autuacoes.add(autuacao);
+	public void autuar(List<Multa> multas, Veiculo veiculo, Local local, Agente agente) {
+		if (agente instanceof AgenteMaquina){
+			Autuacao autuacao = new AutuacaoPorMaquina (multas, veiculo, local,agente.getCodigo());
+			autuacoes.add(autuacao);
+		} else if (agente instanceof AgenteGuarda) {
+			Autuacao autuacao = new AutuacaoPorAgente (multas, veiculo, local,agente.getCodigo());
+			autuacoes.add(autuacao);
+		}
+		
 	}
 	
-	public void autuar(List<Multa> multas, Veiculo veiculo, Local local, Agente agente) {
-		Autuacao autuacao = new AutuacaoPorAgente (multas, veiculo, local,agente);
-		autuacoes.add(autuacao);
-	}
 	
 
 	
