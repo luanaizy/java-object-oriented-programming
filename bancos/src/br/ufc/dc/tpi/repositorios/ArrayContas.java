@@ -31,12 +31,18 @@ public class ArrayContas implements IRepositorioConta {
 		indice--;
 	}
 	public ContaAbstrata procurar(String numero) {
+		int i = this.procurar_index(numero);
+		if (i == -1) return null;
+		else return contas[i];
+	}
+	
+	public int procurar_index(String numero) {
 		for(int i=0; i<contas.length; i++) {
 			if(contas[i] != null && contas[i].get_numero()==numero) {
-				return contas[i];
+				return i;
 			}
 		}
-		return null;
+		return -1;
 	}
 	public ContaAbstrata[] listar() {
 		return contas;

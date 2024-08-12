@@ -19,14 +19,24 @@ public class VectorContas implements IRepositorioConta{
 		ContaAbstrata conta = procurar(numero);
 		contas.remove(conta);
 	}
-	public ContaAbstrata procurar(String numero) {
+	
+	public int procurar_index(String numero) {
 		for(int i=0; i<contas.size(); i++) {
 			if(contas.get(i) != null && contas.get(i).get_numero()==numero) {
-				return contas.get(i);
+				return i;
 			}
 		}
-		return null;
+		return -1;
 	}
+	
+	public ContaAbstrata procurar(String numero) {
+		int i = this.procurar_index(numero);
+		if (i == -1) return null;
+		else return contas.get(i);
+	}
+	
+	
+	
 	public ContaAbstrata[] listar() {
 		ContaAbstrata[] lista_contas = new ContaAbstrata[contas.size()];
 		for(int i=0; i<lista_contas.length;i++) {
