@@ -1,6 +1,9 @@
 package br.ufc.dc.tpi.repositorios;
 
 import br.ufc.dc.tpi.banco.contas.ContaAbstrata;
+import java.io.*;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 
 public class JsonContas implements IRepositorioConta {
 	private VectorContas contas;

@@ -1,10 +1,9 @@
 package br.ufc.dc.tpi.banco;
 
 import java.util.Vector;
-import br.ufc.dc.tpi.banco.contas.Conta;
-import br.ufc.dc.tpi.banco.contas.ContaEspecial;
 import br.ufc.dc.tpi.banco.contas.ContaPoupanca;
 import br.ufc.dc.tpi.banco.contas.ContaAbstrata;
+import br.ufc.dc.tpi.banco.contas.ContaEspecial;
 
 public class BancoVector{
 	private Vector<ContaAbstrata> contas;
