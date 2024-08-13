@@ -2,72 +2,71 @@ package br.ufc.dc.tpi.repositorios;
 
 import br.ufc.dc.tpi.banco.contas.ContaAbstrata;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FileTextoContas implements IRepositorioConta {
 	
 	private File path_arquivo;
 	private VectorContas contas;
-	private int index_linha;
-	private FileWriter arquivo;
+	private FileReader arquivo_leitura;
+	private FileWriter arquivo_escrita;
 
 	
-	public FileTextoContas(File diretorio) {
+	public FileTextoContas(File diretorio, String nome_novo_arquivo) {
 		if (!diretorio.isDirectory()) {
 			diretorio.mkdir();
 		}
-		path_arquivo = new File(diretorio, "conta.txt");
+		path_arquivo = new File(diretorio, nome_novo_arquivo);
 		contas = new VectorContas();
-		index_linha = 0;
 		try {
-			arquivo = new FileWriter(path_arquivo);
+			arquivo_escrita = new FileWriter(path_arquivo);
+			arquivo_leitura = new FileReader(path_arquivo);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
 	}
 	public void inserir(ContaAbstrata conta) { //baseada em caracteres (FileWriter)
-		
-		
-		try {
-			List<String> lines = new ArrayList<>();
-			BufferedReader reader = new BufferedReader(new FileReader(path_arquivo));
-			String line;
-			while ((line = reader.readLine())!= null) {lines.add(line);}
-			reader.close();
-			
-			if(lineNumber > 0 && lineNumber <= lines.size()) {
-				lines.set(lineNumber - 1, lineContent)
-			} else {
-				System.out.println("Linha fora do intervalo");
-				return;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 		contas.inserir(conta);
-		PrintWriter gravador = new PrintWriter(arquivo);
-		gravador.println("Conta: " + conta.get_numero());
-		gravador.println("Saldo: " + conta.get_saldo());
-		gravador.println();
-		index_linha = index_linha + 3;
-		gravador.close();
+		PrintWriter writer = new PrintWriter(arquivo_escrita);
+		for (int i=1; i<=contas.tamanho();i++) {
+			writer.println(i + ". [NUM DA CONTA] "+ contas.listar()[i-1].get_numero());
+			writer.println("[SALDO DA CONTA] " +  contas.listar()[i-1].get_saldo());
+			writer.println();
+		}
+		writer.close();
 	}
 
 	public void remover(String numero) {
-		int indice_conta = contas.procurar_index(numero);
-		PrintWriter gravador = new PrintWriter(arquivo);
-		
-		gravador.close();
+		contas.remover(numero);
+		PrintWriter writer = new PrintWriter(arquivo_escrita);
+		for (int i=1; i<=contas.tamanho();i++) {
+			writer.println(i + ". [NUM DA CONTA] "+ contas.listar()[i-1].get_numero());
+			writer.println("[SALDO DA CONTA] " +  contas.listar()[i-1].get_saldo());
+			writer.println();
+		}
+		writer.close();
 	}
 	
-	public ler_conta(String numero) {
-		
+	public void ler_conta(String numero) {
+		String conteudo;
+		int index = contas.procurar_index(numero);
+		try {
+			BufferedReader reader = new BufferedReader(arquivo_leitura);
+			for (int i=0; i<index;i++) {
+				conteudo = reader.readLine();
+				conteudo = reader.readLine();
+			}
+			conteudo  = reader.readLine();
+			System.out.println(conteudo);
+			conteudo  = reader.readLine();
+			System.out.println(conteudo);
+			reader.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 	
 	public ContaAbstrata procurar(String numero) {
-		
+		return contas.procurar(numero);
 	}
 	public ContaAbstrata[] listar() {
 		return contas.listar();
