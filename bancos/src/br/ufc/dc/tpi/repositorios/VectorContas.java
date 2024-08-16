@@ -1,6 +1,8 @@
 package br.ufc.dc.tpi.repositorios;
 
 import br.ufc.dc.tpi.banco.contas.ContaAbstrata;
+import br.ufc.dc.tpi.exceptions.CIException;
+
 import java.util.Vector;
 
 public class VectorContas implements IRepositorioConta{
@@ -15,8 +17,11 @@ public class VectorContas implements IRepositorioConta{
 		contas.add(conta);
 	}
 	
-	public void remover(String numero) {
+	public void remover(String numero) throws CIException {
 		ContaAbstrata conta = procurar(numero);
+		if (conta == null) {
+			throw new CIException(numero);
+		}
 		contas.remove(conta);
 	}
 	
@@ -29,9 +34,11 @@ public class VectorContas implements IRepositorioConta{
 		return -1;
 	}
 	
-	public ContaAbstrata procurar(String numero) {
+	public ContaAbstrata procurar(String numero) throws CIException {
 		int i = this.procurar_index(numero);
-		if (i == -1) return null;
+		if (i == -1) {
+			throw new CIException(numero);
+		}
 		else return contas.get(i);
 	}
 	

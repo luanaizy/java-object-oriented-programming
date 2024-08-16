@@ -1,5 +1,7 @@
 package br.ufc.dc.tpi.banco.contas;
 
+import com.google.gson.annotations.SerializedName;
+
 public abstract class ContaAbstrata {
 	protected String numero;
 	protected double saldo;

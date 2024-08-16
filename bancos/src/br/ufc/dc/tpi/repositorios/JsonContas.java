@@ -1,11 +1,18 @@
 package br.ufc.dc.tpi.repositorios;
 
 import br.ufc.dc.tpi.banco.contas.ContaAbstrata;
+import br.ufc.dc.tpi.exceptions.CIException;
+
 import java.io.*;
 import java.lang.reflect.Type;
+import java.util.Map;
+import java.util.Vector;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 public class JsonContas implements IRepositorioConta {
@@ -20,28 +27,36 @@ public class JsonContas implements IRepositorioConta {
 		}
 		contas = new VectorContas();
 		path_arquivo = new File(diretorio, nome_novo_arquivo);
-		try {
-			arquivo_leitura = new FileReader(path_arquivo);
-			arquivo_escrita = new FileWriter(path_arquivo);
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
+
 	}
 	
 	
 	public void inserir(ContaAbstrata conta) {
 		contas.inserir(conta);
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		gson.toJson(contas, arquivo_escrita);
+		try {
+			arquivo_escrita = new FileWriter(path_arquivo);
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			gson.toJson(contas, arquivo_escrita);
+			arquivo_escrita.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+		
 	}
 	
-	public void remover(String numero) {
+	public void remover(String numero) throws CIException {
 		contas.remover(numero);
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		gson.toJson(contas, arquivo_escrita);
+		try {
+			arquivo_escrita = new FileWriter(path_arquivo);
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			gson.toJson(contas, arquivo_escrita);
+			arquivo_escrita.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 	
-	public ContaAbstrata procurar(String numero) {
+	public ContaAbstrata procurar(String numero) throws CIException {
 		return contas.procurar(numero);
 	}
 	
@@ -54,14 +69,37 @@ public class JsonContas implements IRepositorioConta {
 		return (int)tamanho;
 	}
 	
-	public void ler_conta(String numero) {
-		Gson gson = new Gson();		
-		Type ContaArrayType = new TypeToken<ContaAbstrata[]>() {}.getType();
-		ContaAbstrata[] buffer_contas = gson.fromJson(arquivo_leitura, ContaArrayType);
-		int indice = contas.procurar_index(numero);
-		if (buffer_contas != null && buffer_contas.length > indice) {
-            ContaAbstrata conta = buffer_contas[indice];
-            System.out.println(conta);
-        }
+	public void ler_conta(String numero) throws CIException {
+	    boolean contaEncontrada = false;
+
+	    try {
+	        arquivo_leitura = new FileReader(path_arquivo);
+
+	        Gson gson = new Gson();
+	        JsonObject jsonObject = gson.fromJson(arquivo_leitura, JsonObject.class);
+	        JsonArray jsonContas = jsonObject.getAsJsonArray("contas");
+
+	        for (JsonElement element : jsonContas) {
+	            JsonObject contaObj = element.getAsJsonObject();
+	            String num = contaObj.get("numero").getAsString();
+	            if (num.equals(numero)) {
+	                double saldo = contaObj.get("saldo").getAsDouble();
+	                System.out.println("Número da Conta: " + num);
+	                System.out.println("Saldo da Conta: " + saldo);
+	                contaEncontrada = true;
+	                break;
+	            }
+	        }
+
+	        arquivo_leitura.close();
+
+	        // Se a conta não for encontrada, lançar uma CIException
+	        if (!contaEncontrada) {
+	            throw new CIException(numero);
+	        }
+
+	    } catch (IOException ioe) {
+	        ioe.printStackTrace();
+	    }
 	}
 }

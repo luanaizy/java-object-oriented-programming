@@ -11,6 +11,7 @@ import br.ufc.dc.tpi.banco.contas.ContaEspecial;
 import br.ufc.dc.tpi.banco.contas.ContaPoupanca;
 import br.ufc.dc.tpi.exceptions.CIException;
 import br.ufc.dc.tpi.exceptions.CInException;
+import br.ufc.dc.tpi.exceptions.CIException;
 import br.ufc.dc.tpi.exceptions.SIException;
 import br.ufc.dc.tpi.repositorios.*;
 
@@ -18,7 +19,7 @@ public class Auditoria {
 
 	public static void main(String[] args) {
 
-		//try {
+		try {
 			Conta conta1 = new Conta("00001");
 			conta1.creditar(500.87);
 			conta1.debitar(45.00);
@@ -80,16 +81,30 @@ public class Auditoria {
 			
 			File diretorio = new File("C:\\Users\\luana.tavares\\Desktop");
 			
-			FileTextoContas rep_txt = new FileTextoContas(diretorio, "contas.txt");
-			rep_txt.inserir(conta10);
-			rep_txt.inserir(contaespecial1);
-			rep_txt.ler_conta(conta10.get_numero());
+			//FileTextoContas rep_txt = new FileTextoContas(diretorio, "contas.txt");
+			//rep_txt.inserir(conta10);
+		//	rep_txt.inserir(contaespecial1);
+			//rep_txt.inserir(contapoupanca2);
+			//rep_txt.ler_conta(conta10.get_numero());
+			//rep_txt.ler_conta(contapoupanca2.get_numero());
 			//rep_txt.ler_conta(contaespecial1.get_numero());
+			//rep_txt.remover(conta10.get_numero());
+			//System.out.println("tamanho: " + rep_txt.tamanho());
 			
-	//	} catch (CIException cie) {
-	//		System.out.println(cie.getMessage());
-		//	System.out.println("Conta: " + cie.numeroConta());
-	//	} catch (SIException sie) {
+			JsonContas rep_json = new JsonContas(diretorio, "contas.json");
+			rep_json.inserir(conta10);
+			rep_json.inserir(contaespecial1);
+			rep_json.inserir(contapoupanca2);
+			rep_json.remover(conta10.get_numero());
+			rep_json.ler_conta(contapoupanca2.get_numero());
+			System.out.println("tamanho: " + rep_json.tamanho());
+			
+			
+		} catch (CIException cie) {
+			System.out.println(cie.getMessage());
+			System.out.println("Conta: " + cie.numeroConta());
+		}}
+		//} catch (SIException sie) {
 		//	System.out.println(sie.getMessage());
 		//	System.out.println("Conta/Saldo:");
 		//	System.out.println(sie.numeroConta() + "/" + sie.saldoConta());
@@ -102,6 +117,6 @@ public class Auditoria {
 		
 		
 		
-	}
+	//}
 
 }

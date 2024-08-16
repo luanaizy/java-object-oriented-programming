@@ -38,7 +38,7 @@ public class BancoIndependente implements IBanco {
 	
 	
 	
-	public ContaAbstrata procurar(String numero) {
+	public ContaAbstrata procurar(String numero) throws CIException {
 		contas.procurar(numero);
 		return null;
 	}

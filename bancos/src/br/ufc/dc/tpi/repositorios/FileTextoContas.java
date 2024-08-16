@@ -1,6 +1,8 @@
 package br.ufc.dc.tpi.repositorios;
 
 import br.ufc.dc.tpi.banco.contas.ContaAbstrata;
+import br.ufc.dc.tpi.exceptions.CIException;
+
 import java.io.*;
 
 public class FileTextoContas implements IRepositorioConta {
@@ -17,41 +19,53 @@ public class FileTextoContas implements IRepositorioConta {
 		}
 		path_arquivo = new File(diretorio, nome_novo_arquivo);
 		contas = new VectorContas();
-		try {
-			arquivo_escrita = new FileWriter(path_arquivo);
-			arquivo_leitura = new FileReader(path_arquivo);
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
+
 	}
 	public void inserir(ContaAbstrata conta) { //baseada em caracteres (FileWriter)
 		contas.inserir(conta);
-		PrintWriter writer = new PrintWriter(arquivo_escrita);
-		for (int i=1; i<=contas.tamanho();i++) {
-			writer.println(i + ". [NUM DA CONTA] "+ contas.listar()[i-1].get_numero());
-			writer.println("[SALDO DA CONTA] " +  contas.listar()[i-1].get_saldo());
-			writer.println();
-		}
-		writer.close();
+		try {
+			arquivo_escrita = new FileWriter(path_arquivo);
+			PrintWriter writer = new PrintWriter(arquivo_escrita);
+			for (int i=1; i<=contas.tamanho();i++) {
+				writer.println(i + ". [NUM DA CONTA] "+ contas.listar()[i-1].get_numero());
+				writer.println("[SALDO DA CONTA] " +  contas.listar()[i-1].get_saldo());
+				writer.println();	
+			}
+			writer.close();
+			arquivo_escrita.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}	
 	}
 
-	public void remover(String numero) {
+	public void remover(String numero) throws CIException {
 		contas.remover(numero);
-		PrintWriter writer = new PrintWriter(arquivo_escrita);
-		for (int i=1; i<=contas.tamanho();i++) {
-			writer.println(i + ". [NUM DA CONTA] "+ contas.listar()[i-1].get_numero());
-			writer.println("[SALDO DA CONTA] " +  contas.listar()[i-1].get_saldo());
-			writer.println();
-		}
-		writer.close();
+		try {
+			arquivo_escrita = new FileWriter(path_arquivo);
+			PrintWriter writer = new PrintWriter(arquivo_escrita);
+			for (int i=1; i<=contas.tamanho();i++) {
+				writer.println(i + ". [NUM DA CONTA] "+ contas.listar()[i-1].get_numero());
+				writer.println("[SALDO DA CONTA] " +  contas.listar()[i-1].get_saldo());
+				writer.println();	
+			}
+			writer.close();
+			arquivo_escrita.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}	
 	}
 	
-	public void ler_conta(String numero) {
+	public void ler_conta(String numero) throws CIException {
 		String conteudo;
 		int index = contas.procurar_index(numero);
+		if (index==-1){
+			throw new CIException(numero);
+		}
 		try {
+			arquivo_leitura = new FileReader(path_arquivo);
 			BufferedReader reader = new BufferedReader(arquivo_leitura);
 			for (int i=0; i<index;i++) {
+				conteudo = reader.readLine();
 				conteudo = reader.readLine();
 				conteudo = reader.readLine();
 			}
@@ -59,13 +73,14 @@ public class FileTextoContas implements IRepositorioConta {
 			System.out.println(conteudo);
 			conteudo  = reader.readLine();
 			System.out.println(conteudo);
+			System.out.println();
 			reader.close();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
 	}
 	
-	public ContaAbstrata procurar(String numero) {
+	public ContaAbstrata procurar(String numero) throws CIException {
 		return contas.procurar(numero);
 	}
 	public ContaAbstrata[] listar() {
