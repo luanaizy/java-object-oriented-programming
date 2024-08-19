@@ -93,7 +93,6 @@ public class JsonContas implements IRepositorioConta {
 
 	        arquivo_leitura.close();
 
-	        // Se a conta não for encontrada, lançar uma CIException
 	        if (!contaEncontrada) {
 	            throw new CIException(numero);
 	        }
