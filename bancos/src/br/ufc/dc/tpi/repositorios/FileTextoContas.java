@@ -75,6 +75,7 @@ public class FileTextoContas implements IRepositorioConta {
 			System.out.println(conteudo);
 			System.out.println();
 			reader.close();
+			arquivo_leitura.close();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
